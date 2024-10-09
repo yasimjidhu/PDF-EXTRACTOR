@@ -1,16 +1,61 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PDFcontext } from '../context/PDFcontext';
-import { Document, Page } from 'react-pdf';
+import { getDocument } from 'pdfjs-dist/build/pdf';
 import { pdfjs } from 'react-pdf';
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `../../node_modules/pdfjs-dist/build/pdf.worker.min.mjs`;
 
 const PageSelector = () => {
-  const { pdfFile, selectedPages, setSelectedPages, totalPages, setTotalPages } = useContext(PDFcontext);
+  const { pdfFile, selectedPages, setSelectedPages, pageCount, setPageCount } = useContext(PDFcontext);
+  const [pdfDocument, setPdfDocument] = useState(null);
+  const [error, setError] = useState(null);
+  const [renderedPages, setRenderedPages] = useState([]);
 
   useEffect(() => {
     setSelectedPages([]);
-  }, [pdfFile, setSelectedPages]);
+    setError(null);
+    setRenderedPages([]);
+
+    if (pdfFile) {
+      const loadPdf = async () => {
+        try {
+          const arrayBuffer = await pdfFile.arrayBuffer();
+          const pdf = await getDocument({ data: arrayBuffer }).promise;
+          setPdfDocument(pdf);
+          setPageCount(pdf.numPages);
+        } catch (err) {
+          console.error('Error loading PDF:', err);
+          setError('Failed to load the PDF. Please try uploading the file again.');
+        }
+      };
+      loadPdf();
+    }
+  }, [pdfFile, setSelectedPages, setPageCount]);
+
+  useEffect(() => {
+    if (pdfDocument) {
+      const renderPages = async () => {
+        const pages = [];
+        try {
+          for (let i = 1; i <= pdfDocument.numPages; i++) {
+            const page = await pdfDocument.getPage(i);
+            const viewport = page.getViewport({ scale: 0.5 });
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            await page.render({ canvasContext: context, viewport: viewport }).promise;
+            pages.push(canvas.toDataURL());
+          }
+          setRenderedPages(pages);
+        } catch (err) {
+          console.error('Error rendering pages:', err);
+          setError('Failed to render PDF pages. Please try again.');
+        }
+      };
+      renderPages();
+    }
+  }, [pdfDocument]);
 
   const togglePage = (pageNumber) => {
     setSelectedPages(prev => 
@@ -20,27 +65,22 @@ const PageSelector = () => {
     );
   };
 
-  const handleDocumentLoadSuccess = ({ numPages }) => {
-    setTotalPages(numPages);
-  };
+  if (error) {
+    return <div className="text-red-500 mt-4">{error}</div>;
+  }
+
+  if (!pdfFile) {
+    return null;
+  }
 
   return (
     <div className="mt-4">
       <h3 className="text-lg font-semibold mb-2">Select pages to extract:</h3>
-      <Document
-        file={pdfFile}
-        onLoadSuccess={handleDocumentLoadSuccess}
-        className="flex flex-wrap justify-center"
-      >
-        {Array.from(new Array(totalPages), (el, index) => (
+      <div className="flex flex-wrap justify-center">
+        {renderedPages.map((pageDataUrl, index) => (
           <div key={`page_${index + 1}`} className="m-2">
             <label className="flex flex-col items-center">
-              <Page
-                pageNumber={index + 1}
-                width={100}
-                renderAnnotationLayer={false}
-                renderTextLayer={false}
-              />
+              <img src={pageDataUrl} alt={`Page ${index + 1}`} className="w-24 h-auto" />
               <input
                 type="checkbox"
                 checked={selectedPages.includes(index + 1)}
@@ -51,7 +91,7 @@ const PageSelector = () => {
             </label>
           </div>
         ))}
-      </Document>
+      </div>
     </div>
   );
 };

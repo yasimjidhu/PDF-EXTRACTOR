@@ -15,9 +15,10 @@ if(!fs.existsSync(uploadDir)){
     fs.mkdirSync(uploadDir)
 }
 
+
 app.use('/upload',uploadRoutes)
 
-app.use('/downloads',express.static(uploadDir))
+app.use('/uploads',express.static(uploadDir))
 
 const PORT = process.env.PORT  || 5000
 app.listen(PORT,()=>{

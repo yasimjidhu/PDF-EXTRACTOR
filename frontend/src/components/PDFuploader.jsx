@@ -6,19 +6,23 @@ import PageSelector from './PageSelector';
 const PDFUploader = () => {
   const { pdfFile, setPdfFile, selectedPages } = useContext(PDFcontext);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file && file.type === 'application/pdf') {
       setPdfFile(file);
+      setError(null);
     } else {
-      alert('Please upload a valid PDF file');
+      setPdfFile(null);
+      setError('Please upload a valid PDF file');
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
     try {
       const formData = new FormData();
@@ -36,7 +40,7 @@ const PDFUploader = () => {
       link.click();
     } catch (error) {
       console.error('Error processing PDF:', error);
-      alert('An error occurred while processing the PDF. Please try again.');
+      setError('An error occurred while processing the PDF. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -57,12 +61,13 @@ const PDFUploader = () => {
             className="w-full p-2 border border-gray-300 rounded"
           />
         </div>
-        {pdfFile && <PageSelector />}
+        {error && <div className="text-red-500 mb-4">{error}</div>}
+        {pdfFile && <PageSelector pdfFile={pdfFile} />}
         <button
           type="submit"
-          disabled={loading || !pdfFile}
+          disabled={loading || !pdfFile || selectedPages.length === 0}
           className={`w-full p-2 mt-4 text-white font-bold rounded ${
-            loading || !pdfFile ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-700'
+            loading || !pdfFile || selectedPages.length === 0 ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-700'
           }`}
         >
           {loading ? 'Creating PDF...' : 'Create PDF'}
