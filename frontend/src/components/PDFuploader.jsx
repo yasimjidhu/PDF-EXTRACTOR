@@ -67,7 +67,7 @@ const PDFUploader = () => {
           type="submit"
           disabled={loading || !pdfFile || selectedPages.length === 0}
           className={`w-full p-2 mt-4 text-white font-bold rounded ${
-            loading || !pdfFile || selectedPages.length === 0 ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-700'
+            loading || !pdfFile || selectedPages.length === 0 ? 'bg-gray-400' : 'bg-black hover:bg-gray-600'
           }`}
         >
           {loading ? 'Creating PDF...' : 'Create PDF'}
