@@ -6,7 +6,7 @@ import { pdfjs } from 'react-pdf';
 pdfjs.GlobalWorkerOptions.workerSrc = `../../node_modules/pdfjs-dist/build/pdf.worker.min.mjs`;
 
 const PageSelector = () => {
-  const { pdfFile, selectedPages, setSelectedPages, pageCount, setPageCount } = useContext(PDFcontext);
+  const { pdfFile, selectedPages, setSelectedPages, setPageCount } = useContext(PDFcontext);
   const [pdfDocument, setPdfDocument] = useState(null);
   const [error, setError] = useState(null);
   const [renderedPages, setRenderedPages] = useState([]);
