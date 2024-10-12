@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Axios instance
 const api = axios.create({
-    baseURL: 'http://localhost:10000', 
+    baseURL: 'https://pdf-extractor-okox.onrender.com', 
     headers: {
         'Content-Type': 'application/json'
     },

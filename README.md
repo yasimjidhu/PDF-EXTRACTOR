@@ -78,7 +78,7 @@ Example Request:
 
 bash
 Copy code
-curl -X POST http://localhost:5000/upload/extract -d '{"selectedPages":[1,2,3],"filename":"example.pdf"}' -H "Content-Type: application/json"
+curl -X POST https://pdf-extractor-okox.onrender.com/upload/extract -d '{"selectedPages":[1,2,3],"filename":"example.pdf"}' -H "Content-Type: application/json"
 Error Handling
 If any errors occur during the upload or extraction process, a JSON object will be returned with an appropriate error message and status code.
 

@@ -53,7 +53,7 @@ const Mypdfs = () => {
                 Uploaded on: {new Date(pdf.createdAt).toLocaleDateString()}
               </p>
               <a
-                href={`http://localhost:10000/uploads/${pdf.filename}`}
+                href={`https://pdf-extractor-okox.onrender.com/uploads/${pdf.filename}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded-md"
