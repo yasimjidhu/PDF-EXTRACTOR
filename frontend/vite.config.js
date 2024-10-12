@@ -6,10 +6,12 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          pdfjs: ['pdfjs-dist/build/pdf'],
-        },
-      },
-    },
-  },
+        manualChunks(id) {
+          if (id.includes('pdfjs-dist')) {
+            return 'pdfjs';  // Separate PDF.js into its own chunk
+          }
+        }
+      }
+    }
+  }
 });

@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { PDFcontext } from "../context/PDFcontext";
 import PageSelector from "./PageSelector";
 import { FileUp, FileText, Check } from "lucide-react";
-import api from "../../config/axiosInstance";
 import Navbar from "./Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { extractPdfPages, uploadPdf } from "../redux/pdfSlice";

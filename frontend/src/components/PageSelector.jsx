@@ -3,7 +3,7 @@ import { PDFcontext } from '../context/PDFcontext';
 import { getDocument } from 'pdfjs-dist/build/pdf';
 import { pdfjs } from 'react-pdf';
 
-pdfjs.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.js'; 
+pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const PageSelector = () => {
   const { pdfFile, selectedPages, setSelectedPages, setPageCount } = useContext(PDFcontext);
