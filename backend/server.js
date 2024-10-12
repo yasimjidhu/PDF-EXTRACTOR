@@ -11,7 +11,7 @@ const app = express()
 app.use(express.json());  
 
 const corsOptions = {
-    origin: 'https://pdf-extractor-d8mg.vercel.app', 
+    origin: 'https://pdf-extractor-lovat.vercel.app', 
     credentials: true,
 };
 
