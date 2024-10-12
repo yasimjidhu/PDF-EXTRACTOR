@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
@@ -8,10 +9,15 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('pdfjs-dist')) {
-            return 'pdfjs';  // Separate PDF.js into its own chunk
+            return 'pdfjs';
           }
         }
       }
+    }
+  },
+  resolve: {
+    alias: {
+      'pdfjs-dist': path.resolve(__dirname, 'node_modules/pdfjs-dist'),
     }
   }
 });
