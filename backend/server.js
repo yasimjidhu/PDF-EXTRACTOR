@@ -11,8 +11,8 @@ const app = express()
 app.use(express.json());  
 
 const corsOptions = {
-    origin: 'http://localhost:5173', 
-    credentials : true, 
+    origin: 'https://pdf-extractor-d8mg.vercel.app', 
+    credentials: true,
 };
 
 app.use(cors(corsOptions))
@@ -27,7 +27,7 @@ app.use('/auth',authRoutes)
 
 app.use('/uploads',express.static(uploadDir))
 
-const PORT = process.env.PORT  || 5000
+const PORT = process.env.PORT  || 10000
 
 connectDB()
 app.listen(PORT,()=>{

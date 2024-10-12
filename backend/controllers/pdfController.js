@@ -69,7 +69,7 @@ const extractPages = async (req, res) => {
         // Send download URL for the new PDF
         res.status(200).json({
             message: 'PDF extracted and saved',
-            downloadUrl: `http://localhost:5000/uploads/${extractedFilename}` // Use dynamic filename
+            downloadUrl: `http://localhost:10000/uploads/${extractedFilename}` // Use dynamic filename
         });
     } catch (error) {
         res.status(500).json({ error: 'Error extracting PDF: ' + error.message });
