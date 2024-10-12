@@ -1,12 +1,13 @@
 import axios from 'axios';
 
-// Axios instance
+
 const api = axios.create({
-    baseURL: 'https://pdf-extractor-okox.onrender.com', 
+    baseURL: import.meta.env.VITE_API_URL,
     headers: {
         'Content-Type': 'application/json'
     },
-    withCredentials: true // Allows sendrequestsing cookies with 
+    withCredentials: true
 });
+
 
 export default api;
