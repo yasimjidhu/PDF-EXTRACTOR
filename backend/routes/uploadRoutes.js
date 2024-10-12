@@ -5,6 +5,7 @@ const uploadController = require('../controllers/pdfController.js')
 const router = express.Router()
 
 router.post('/',upload.single('pdfFile'),uploadController.uploadPdf)
+router.get('/:userId',uploadController.getMyPdfs)
 router.post('/extract',uploadController.extractPages)
 
 module.exports = router

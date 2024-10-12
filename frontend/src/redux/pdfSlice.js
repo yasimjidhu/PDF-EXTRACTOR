@@ -28,6 +28,17 @@ export const extractPdfPages = createAsyncThunk('pdf/extractPdfPages', async (da
     }
 });
 
+// Thunk for extracting pages from a PDF
+export const getMyPdfs = createAsyncThunk('pdf/mypdfs', async (userId, { rejectWithValue }) => {
+    try {
+        const response = await api.get(`/pdf/${userId}`);
+        console.log('response of mypdfs',response)
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error.response.data);
+    }
+});
+
 
 const pdfSlice = createSlice({
     name: 'pdf',

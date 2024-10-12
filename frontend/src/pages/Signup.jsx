@@ -3,6 +3,8 @@ import { Mail, Lock, User } from "lucide-react";
 import api from "../../config/axiosInstance";
 import { Link, useNavigate } from "react-router-dom";
 import { validate } from "../util/validator";
+import { useDispatch } from "react-redux";
+import { signup } from "../redux/authSlice";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -11,6 +13,7 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -19,9 +22,7 @@ const Signup = () => {
     }
 
     try {
-      const res = await api.post("/auth/register", { username, email, password });
-      console.log("response of signup", res.data);
-      localStorage.setItem("token", res.data.token);
+      const res = await dispatch(signup({ username, email, password }))
       navigate("/upload");
     } catch (error) {
       console.error(error);

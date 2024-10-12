@@ -1,10 +1,33 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../config/axiosInstance';
 
+// Thunk for signup 
+export const signup = createAsyncThunk('auth/signup', async (credentials, { rejectWithValue }) => {
+    try {
+        console.log('signup reached',credentials)
+        const response = await api.post('/auth/register', credentials);
+        console.log('response of signup',response)
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error.response.data);
+    }
+});
+
+
+// Thunk for logging in a user
+export const loginUser = createAsyncThunk('auth/loginUser', async (credentials, { rejectWithValue }) => {
+    try {
+        const response = await api.post('/auth/login', credentials);
+        console.log('reponse of login',response)
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error.response.data);
+    }
+});
+
 // User Logout
 export const logoutUser = createAsyncThunk('auth/logoutUser', async (_, { rejectWithValue }) => {
     try {
-        console.log('logout reached')
         const response = await api.post('/auth/logout');
         return response.data;
     } catch (error) {
@@ -12,21 +35,11 @@ export const logoutUser = createAsyncThunk('auth/logoutUser', async (_, { reject
     }
 });
 
-// Thunk for logging in a user
-export const loginUser = createAsyncThunk('auth/loginUser', async (credentials, { rejectWithValue }) => {
-    try {
-        const response = await api.post('/auth/login', credentials);
-        return response.data;
-    } catch (error) {
-        return rejectWithValue(error.response.data);
-    }
-});
 
 const authSlice = createSlice({
     name: 'auth',
     initialState: {
         user: null,
-        token: null,
         loading: false,
         error: null
     },
@@ -42,6 +55,36 @@ const authSlice = createSlice({
     },
     extraReducers: (builder) => {
 
+        builder.addCase(signup.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+
+        builder.addCase(signup.fulfilled, (state,action) => {
+            console.log('action payload of signup',action.payload)
+            state.user = action.payload;
+            state.loading = false;
+        });
+
+        builder.addCase(signup.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        });
+        builder.addCase(loginUser.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+
+        builder.addCase(loginUser.fulfilled, (state,action) => {
+            console.log('action payload of login',action.payload)
+            state.user = action.payload.user;
+            state.loading = false;
+        });
+
+        builder.addCase(loginUser.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        });
         builder.addCase(logoutUser.pending, (state) => {
             state.loading = true;
             state.error = null;

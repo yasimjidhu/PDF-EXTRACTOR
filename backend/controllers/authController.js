@@ -8,12 +8,11 @@ const registerUser = async (req, res) => {
     try {
         const userExists = await User.findOne({ email });
         if (userExists) {
-            console.log('user   exists')
             return res.status(400).json({ message: 'User already exists' });
         }
 
         const user = await User.create({ username, email, password });
-        res.status(201).json({ _id: user._id, username: user.username, email: user.email });
+        res.status(201).json(user);
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
@@ -42,7 +41,7 @@ const loginUser = async (req, res) => {
             maxAge: 30 * 24 * 60 * 60 * 1000, 
         });
 
-        res.status(200).json({success:true, _id: user._id, username: user.username });
+        res.status(200).json({success:true,user });
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }

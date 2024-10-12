@@ -4,13 +4,15 @@ import PageSelector from "./PageSelector";
 import { FileUp, FileText, Check } from "lucide-react";
 import api from "../../config/axiosInstance";
 import Navbar from "./Navbar";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { extractPdfPages, uploadPdf } from "../redux/pdfSlice";
 
 const PDFUploader = () => {
   const { pdfFile, setPdfFile, selectedPages } = useContext(PDFcontext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const {user} = useSelector((state)=>state.auth)
 
   const dispatch = useDispatch();
 
@@ -30,17 +32,19 @@ const PDFUploader = () => {
     setLoading(true); 
     setError(null);
 
+    if(!user)return;
+
     try {
       const formData = new FormData();
       formData.append("pdfFile", pdfFile);
-
+      console.log('user is',user)
       const uploadResponse = await dispatch(uploadPdf(formData)).unwrap();
 
       const filename = uploadResponse.filename;
 
       // Now, extract the selected pages from the uploaded PDF
       const extractResponse = await dispatch(
-        extractPdfPages({ filename, selectedPages })
+        extractPdfPages({ filename, selectedPages,user })
       ).unwrap();
 
       const link = document.createElement("a");
