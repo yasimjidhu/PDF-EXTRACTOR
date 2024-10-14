@@ -1,11 +1,12 @@
 const jwt = require('jsonwebtoken');
 
 const protect = (req, res, next) => {
+  console.log('cookeis data',req.cookies)
   const token = req.cookies.token; 
-  
+  console.log('token data',token)
   // If no token found, respond with an unauthorized status
   if (!token) {
-    return res.status(401).json({ message: 'Not authorized, no token' });
+    return res.status(401).json({ message: 'Not authorized, no token' ,token});
   }
 
   // Verify the token

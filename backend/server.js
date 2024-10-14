@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const fs = require('fs')
 const cors = require('cors')
+const cookieParser = require('cookie-parser');
 const uploadRoutes = require('./routes/uploadRoutes.js')
 const authRoutes = require('./routes/auhRoutes.js')
 const connectDB = require('./config/db.js')
@@ -9,6 +10,7 @@ const connectDB = require('./config/db.js')
 
 const app = express()
 app.use(express.json());  
+app.use(cookieParser());
 
 const corsOptions = {
     origin: 'https://pdf-extractor-lovat.vercel.app', 

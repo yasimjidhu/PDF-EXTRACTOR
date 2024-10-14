@@ -40,7 +40,6 @@ const PDFUploader = () => {
     try {
       const formData = new FormData();
       formData.append("pdfFile", pdfFile);
-      console.log('user is',user)
       const uploadResponse = await dispatch(uploadPdf(formData)).unwrap();
 
       const filename = uploadResponse.filename;
