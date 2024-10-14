@@ -1,21 +1,23 @@
+// middleware/authMiddleware.js
 const jwt = require('jsonwebtoken');
 
 const protect = (req, res, next) => {
-  console.log('cookeis data',req.cookies)
-  const token = req.cookies.token; 
-  console.log('token data',token)
-  // If no token found, respond with an unauthorized status
-  if (!token) {
-    return res.status(401).json({ message: 'Not authorized, no token' ,token});
+  let token;
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    try {
+      token = req.headers.authorization.split(' ')[1];
+      console.log('token is ',token)
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      console.log('decoded user is',decoded)
+      req.user = decoded;
+      next();
+    } catch (error) {
+      res.status(401).json({ message: 'Not authorized' });
+    }
   }
 
-  // Verify the token
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; 
-    next(); 
-  } catch (error) {
-    res.status(401).json({ message: 'Not authorized, token failed' });
+  if (!token) {
+    res.status(401).json({ message: 'Not authorized, no token' });
   }
 };
 

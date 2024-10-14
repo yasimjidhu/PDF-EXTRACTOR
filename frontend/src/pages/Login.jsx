@@ -22,7 +22,8 @@ const Login = () => {
     try {
       const res = await dispatch(loginUser({ email, password }));
       console.log("resepon of login in frontend", res);
-      if (res.payload.success) {
+      if (res.payload.success && res.payload.token) {
+        localStorage.setItem("token", res.payload.token);
         navigate("/upload");
       } else {
         toast.error(res.payload.message);
