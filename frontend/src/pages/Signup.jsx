@@ -27,7 +27,7 @@ const Signup = () => {
 
     try {
       const res = await dispatch(signup({ username, email, password }))
-      navigate("/upload");
+      navigate("/login");
     } catch (error) {
       console.error(error);
     }
