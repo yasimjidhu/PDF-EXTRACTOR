@@ -8,6 +8,10 @@ const Mypdfs = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  useEffect(()=>{
+    document.title = 'My Documents'
+  },[])
+
   const {user} = useSelector((state)=>state.auth)
 
   const dispatch = useDispatch()

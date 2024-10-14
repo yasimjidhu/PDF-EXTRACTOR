@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Mail, Lock, User } from "lucide-react";
 import api from "../../config/axiosInstance";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,6 +11,10 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  useEffect(()=>{
+    document.title = 'Signup'
+  },[])
 
   const navigate = useNavigate();
   const dispatch = useDispatch();

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { PDFcontext } from "../context/PDFcontext";
 import PageSelector from "./PageSelector";
 import { FileUp, FileText, Check } from "lucide-react";
@@ -10,6 +10,10 @@ const PDFUploader = () => {
   const { pdfFile, setPdfFile, selectedPages } = useContext(PDFcontext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  useEffect(()=>{
+    document.title = 'Upload'
+  },[])
 
   const {user} = useSelector((state)=>state.auth)
 

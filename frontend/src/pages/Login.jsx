@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Mail, Lock } from "lucide-react";
 import api from "../../config/axiosInstance";
 import { useDispatch } from "react-redux";
@@ -9,6 +9,10 @@ import { toast } from "react-toastify";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(()=>{
+    document.title = 'Login'
+  },[])
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
